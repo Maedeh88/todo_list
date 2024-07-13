@@ -6,7 +6,7 @@ use Brick\Math\BigInteger;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property string username
+ * @property string email
  * @property string password
  */
 class LoginRequest extends FormRequest
@@ -29,7 +29,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
         ];
     }

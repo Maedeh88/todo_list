@@ -11,12 +11,27 @@ class UserRepository implements UserRepositoryInterface
 {
 
     /**
-     * @param $user_name
-     * @return Builder|Builder[]|Collection|User|null
+     * @param $email
+     * @return Builder|Model|object|null
      * get a specified user with id
      */
-    public function findByUserName($user_name)
+    public function findByEmail($email)
     {
-        return User::query()->where('username', $user_name)->first();
+        return User::query()->where('email', $email)->first();
+    }
+
+    /**
+     * @param array $data
+     * @return Builder|Model
+     * to register a new user in db
+     */
+    public function register(array $data)
+    {
+        return User::query()->create($data);
+    }
+
+    public function findById($id)
+    {
+        return User::query()->findOrFail($id);
     }
 }
