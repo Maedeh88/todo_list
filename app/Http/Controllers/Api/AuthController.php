@@ -39,8 +39,13 @@ class AuthController extends Controller
 
         event(new Registered($user));
 
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+
         return response()->json([
             'message' => 'User registered successfully. Please check your email for verification.',
+            'access_token' => $token,
+            'token_type' => 'Bearer',
         ], 201);
     }
 
