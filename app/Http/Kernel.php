@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\VerifyUserAccess;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -65,5 +66,6 @@ class Kernel extends HttpKernel
         'verified.api' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'auth.api' => \App\Http\Middleware\AuthenticateApi::class,
+        'access' => VerifyUserAccess::class,
     ];
 }

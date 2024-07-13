@@ -27,10 +27,10 @@ Route::middleware(['auth.api:sanctum', 'verified.api'])->group(function () {
         Route::get('', [TaskController::class, 'index'])->name('index_task');
         Route::get('/create', [TaskController::class, 'create'])->name('create_task');
         Route::post('/store', [TaskController::class, 'store'])->name('store_task');
-        Route::get('/edit/{id}', [TaskController::class, 'edit'])->name('edit_task');
-        Route::post('/update', [TaskController::class, 'update'])->name('update_task');
-        Route::delete('/delete/{id}', [TaskController::class, 'delete'])->name('delete_task');
-        Route::get('/show/{id}', [TaskController::class, 'show'])->name('show_task');
+        Route::get('/edit/{id}', [TaskController::class, 'edit'])->name('edit_task')->middleware('access');
+        Route::post('/update', [TaskController::class, 'update'])->name('update_task')->middleware('access');
+        Route::delete('/delete/{id}', [TaskController::class, 'delete'])->name('delete_task')->middleware('access');
+        Route::get('/show/{id}', [TaskController::class, 'show'])->name('show_task')->middleware('access');
     });
 });
 
