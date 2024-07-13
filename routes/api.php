@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\VerificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +21,16 @@ Route::post('/email/resend', [VerificationController::class, 'resend'])
     ->middleware(['auth:sanctum', 'throttle:6,1'])
     ->name('verification.send');
 
-Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
+Route::middleware(['auth.api:sanctum', 'verified.api'])->group(function () {
     // Protected routes for verified users
+    Route::group(['prefix' => 'task'], function (){
+        Route::get('', [TaskController::class, 'index'])->name('index_task');
+        Route::get('/create', [TaskController::class, 'create'])->name('create_task');
+        Route::post('/store', [TaskController::class, 'store'])->name('store_task');
+        Route::get('/edit/{id}', [TaskController::class, 'edit'])->name('edit_task');
+        Route::post('/update', [TaskController::class, 'update'])->name('update_task');
+        Route::delete('/delete/{id}', [TaskController::class, 'delete'])->name('delete_task');
+        Route::get('/show/{id}', [TaskController::class, 'show'])->name('show_task');
+    });
 });
-
 
