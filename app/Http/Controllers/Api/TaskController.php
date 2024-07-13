@@ -11,6 +11,7 @@ use App\Services\ProgressService;
 use App\Services\TaskService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 
@@ -69,13 +70,15 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        try {
-            $task = $this->taskService->create($request->all());
-        } catch (\Exception $exception) {
-            Log::error($exception->getMessage());
-            return response()->json(['message' => 'An error occurred while saving the task.']);
-        }
-        return response()->json(['message' => 'The task saved successfully.']);
+        if ($request->user_id == Auth::id()) {
+            try {
+                $task = $this->taskService->create($request->all());
+            } catch (\Exception $exception) {
+                Log::error($exception->getMessage());
+                return response()->json(['message' => 'An error occurred while saving the task.']);
+            }
+            return response()->json(['message' => 'The task saved successfully.']);
+        } else return response()->json(['message' => 'You are not allowed to make changes for someone else.']);
     }
 
     /**
@@ -108,14 +111,16 @@ class TaskController extends Controller
             'subject' => $request->subject,
             'description' => $request->description
         ];
-        try {
-            $task = $this->taskService->update($data, $request->input('id'));
-        } catch (\Exception $exception)
-        {
-            Log::error($exception->getMessage());
-            return response()->json(['message' => 'An error occurred while updating the task.']);
-        }
-        return response()->json(['message' => 'The task updated successfully.']);
+        if ($request->user_id == Auth::id()) {
+            try {
+                $task = $this->taskService->update($data, $request->input('id'));
+            } catch (\Exception $exception) {
+                Log::error($exception->getMessage());
+                return response()->json(['message' => 'An error occurred while updating the task.']);
+            }
+            return response()->json(['message' => 'The task updated successfully.']);
+        } else return response()->json(['message' => 'You are not allowed to make changes for someone else.']);
+
     }
 
     /**
@@ -127,8 +132,7 @@ class TaskController extends Controller
     {
         try {
             $this->taskService->delete($id);
-        } catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             Log::error($exception->getMessage());
             return response()->json(['message' => 'An error occurred while deleting the task.']);
         }

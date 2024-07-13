@@ -14,12 +14,32 @@ class UserService
     }
 
     /**
-     * @param $user_name
+     * @param $id
+     * @return mixed
+     * get a user by id
+     */
+    public function findById($id)
+    {
+        return $this->userRepository->findById($id);
+    }
+
+    /**
+     * @param $email
+     * @return mixed
+     * get a user by email
+     */
+    public function findByEmail($email)
+    {
+        return $this->userRepository->findByEmail($email);
+    }
+
+    /**
+     * @param $data
      * @return mixed
      */
-    public function findByUserName($user_name)
+    public function register($data)
     {
-        return $this->userRepository->findByUserName($user_name);
+        return $this->userRepository->register($data);
     }
 
 }

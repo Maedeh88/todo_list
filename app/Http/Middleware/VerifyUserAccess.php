@@ -27,15 +27,16 @@ class VerifyUserAccess
         if (!$id)
             $id = $request->input('id');
 
-        $task = Task::query()->findOrFail($id);
+        $task = Task::query()->find($id);
 
         if (!$task) {
-            return redirect('/task');
+            return response()->json(["message" => "There is no task with selected id."]);
         }
 
         if (Auth::id() !== $task->user_id) {
             return response()->json(["message" => "You are not authorized to make changes to this task."]);
         }
+
         return $next($request);
     }
 

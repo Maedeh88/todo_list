@@ -4,15 +4,25 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
+    protected $userService;
+
+    public function __construct (UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+
+
     public function verify($id, $hash)
     {
-        $user = User::findOrFail($id);
+        $user = $this->userService->findById($id);
 
         if (!hash_equals((string)$hash, sha1($user->getEmailForVerification()))) {
             return response()->json([

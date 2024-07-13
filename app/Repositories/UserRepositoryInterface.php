@@ -4,6 +4,10 @@ namespace App\Repositories;
 
 interface UserRepositoryInterface
 {
-    public function findByUserName($user_name);
+    public function findById($id);
+
+    public function findByEmail($email);
+
+    public function register(array $data);
 
 }
